@@ -10,9 +10,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PublicLeadController;
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
+
+// Public lead form - no login required
+Route::get('/enquiry', [PublicLeadController::class, 'show'])->name('public.lead-form');
+Route::post('/enquiry', [PublicLeadController::class, 'store'])->name('public.lead-form.store');
 
 Route::middleware(['auth'])->group(function () {
     // Dashboard

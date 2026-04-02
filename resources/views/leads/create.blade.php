@@ -168,6 +168,32 @@
 
                         </div>
 
+                        {{-- Interested Properties --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Interested Properties</label>
+                                <div class="max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2">
+                                    @forelse ($properties as $property)
+                                        <label class="flex items-start gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                                            <input type="checkbox" name="property_ids[]" value="{{ $property->id }}"
+                                                {{ in_array($property->id, old('property_ids', [])) ? 'checked' : '' }}
+                                                class="mt-1 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-gray-800">{{ $property->title }}</p>
+                                                <p class="text-xs text-gray-500">{{ $property->location }} &middot; {{ $property->type->label() }} &middot; {{ $property->formatted_price }}</p>
+                                            </div>
+                                            <span class="text-xs px-2 py-0.5 rounded-full {{ $property->status->value === 'available' ? 'bg-green-100 text-green-700' : ($property->status->value === 'reserved' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
+                                                {{ $property->status->label() }}
+                                            </span>
+                                        </label>
+                                    @empty
+                                        <p class="text-sm text-gray-400 text-center py-4">No properties added yet.</p>
+                                    @endforelse
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Select properties the client is interested in.</p>
+                            </div>
+
+                        </div>
+
                         {{-- Actions --}}
                         <div class="mt-8 flex items-center justify-end gap-4">
                             <a href="{{ route('leads.index') }}"

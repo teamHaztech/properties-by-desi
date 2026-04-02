@@ -7,6 +7,7 @@ use App\Enums\LeadStatus;
 use App\Http\Requests\Lead\StoreLeadRequest;
 use App\Http\Requests\Lead\UpdateLeadRequest;
 use App\Models\Lead;
+use App\Models\Property;
 use App\Models\User;
 use App\Services\LeadService;
 use Illuminate\Http\Request;
@@ -42,10 +43,12 @@ class LeadController extends Controller
     public function create()
     {
         $agents = User::role('sales_agent')->get();
+        $properties = Property::where('status', 'available')->orderBy('title')->get();
 
         return view('leads.create', [
             'agents' => $agents,
             'sources' => LeadSource::cases(),
+            'properties' => $properties,
         ]);
     }
 
@@ -61,6 +64,11 @@ class LeadController extends Controller
         }
 
         $lead = $this->leadService->createLead($request->validated());
+
+        // Attach selected properties
+        if ($request->has('property_ids')) {
+            $lead->properties()->attach($request->property_ids, ['status' => 'suggested']);
+        }
 
         return redirect()->route('leads.show', $lead)
             ->with('success', 'Lead created successfully.');
