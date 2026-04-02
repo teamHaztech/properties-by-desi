@@ -71,14 +71,13 @@
                                 @enderror
                             </div>
 
-                            {{-- Source --}}
+                            {{-- Source (default: call) --}}
                             <div>
                                 <label for="source" class="block text-sm font-medium text-gray-700">Source</label>
                                 <select name="source" id="source"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                    <option value="">-- Select Source --</option>
                                     @foreach ($sources as $source)
-                                        <option value="{{ $source->value }}" @selected(old('source') === $source->value)>
+                                        <option value="{{ $source->value }}" @selected(old('source', 'call') === $source->value)>
                                             {{ $source->label() }}
                                         </option>
                                     @endforeach
@@ -88,14 +87,15 @@
                                 @enderror
                             </div>
 
-                            {{-- Assigned Agent --}}
+                            {{-- Assigned Agent (default: Pasad) --}}
+                            @php $defaultAgent = old('assigned_agent_id', $agents->firstWhere('username', 'pasad')?->id); @endphp
                             <div>
                                 <label for="assigned_agent_id" class="block text-sm font-medium text-gray-700">Assigned Agent</label>
                                 <select name="assigned_agent_id" id="assigned_agent_id"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     <option value="">-- Select Agent --</option>
                                     @foreach ($agents as $agent)
-                                        <option value="{{ $agent->id }}" @selected(old('assigned_agent_id') == $agent->id)>
+                                        <option value="{{ $agent->id }}" @selected($defaultAgent == $agent->id)>
                                             {{ $agent->name }}
                                         </option>
                                     @endforeach
@@ -105,24 +105,44 @@
                                 @enderror
                             </div>
 
-                            {{-- Budget Min / Budget Max --}}
-                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <div>
-                                    <label for="budget_min" class="block text-sm font-medium text-gray-700">Budget Min</label>
-                                    <input type="number" name="budget_min" id="budget_min" value="{{ old('budget_min') }}" min="0" step="1"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                    @error('budget_min')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                            {{-- Budget Range Slider --}}
+                            <div x-data="{
+                                min: {{ old('budget_min', 3000000) }},
+                                max: {{ old('budget_max', 20000000) }},
+                                formatIndian(val) {
+                                    if (val >= 10000000) return (val / 10000000).toFixed(1) + ' Cr';
+                                    if (val >= 100000) return (val / 100000).toFixed(0) + ' L';
+                                    return val.toLocaleString('en-IN');
+                                }
+                            }">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Budget Range</label>
+                                <div class="flex items-center justify-between text-sm text-indigo-700 font-semibold mb-2">
+                                    <span>₹ <span x-text="formatIndian(min)"></span></span>
+                                    <span>to</span>
+                                    <span>₹ <span x-text="formatIndian(max)"></span></span>
                                 </div>
-                                <div>
-                                    <label for="budget_max" class="block text-sm font-medium text-gray-700">Budget Max</label>
-                                    <input type="number" name="budget_max" id="budget_max" value="{{ old('budget_max') }}" min="0" step="1"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                    @error('budget_max')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="text-xs text-gray-500">Min Budget</label>
+                                        <input type="range" name="budget_min" x-model="min"
+                                            min="1000000" max="1000000000" step="500000"
+                                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-gray-500">Max Budget</label>
+                                        <input type="range" name="budget_max" x-model="max"
+                                            min="1000000" max="1000000000" step="500000"
+                                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                                    </div>
                                 </div>
+                                <div class="flex justify-between text-[10px] text-gray-400 mt-1">
+                                    <span>10 L</span>
+                                    <span>1 Cr</span>
+                                    <span>10 Cr</span>
+                                    <span>100 Cr</span>
+                                </div>
+                                @error('budget_min') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                                @error('budget_max') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
 
                             {{-- Preferred Property Type --}}

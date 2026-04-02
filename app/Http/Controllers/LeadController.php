@@ -155,8 +155,13 @@ class LeadController extends Controller
     public function quickCreate()
     {
         $agents = User::role('sales_agent')->get();
+        $cities = City::active()->orderBy('name')->get();
 
-        return view('leads.quick-create', ['agents' => $agents, 'sources' => LeadSource::cases()]);
+        return view('leads.quick-create', [
+            'agents' => $agents,
+            'sources' => LeadSource::cases(),
+            'cities' => $cities,
+        ]);
     }
 
     public function quickStore(Request $request)
@@ -164,8 +169,13 @@ class LeadController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
+            'email' => 'nullable|email|max:255',
             'source' => 'required|string',
             'assigned_agent_id' => 'nullable|exists:users,id',
+            'budget_min' => 'nullable|numeric|min:0',
+            'budget_max' => 'nullable|numeric|min:0',
+            'preferred_property_type' => 'nullable|string|max:255',
+            'urgency' => 'nullable|in:low,medium,high,immediate',
         ]);
 
         $duplicate = $this->leadService->checkDuplicate($data['phone']);
@@ -176,6 +186,11 @@ class LeadController extends Controller
         }
 
         $lead = $this->leadService->createLead($data);
+
+        // Attach cities
+        if ($request->has('city_ids')) {
+            $lead->cities()->attach($request->city_ids);
+        }
 
         return redirect()->route('leads.show', $lead)
             ->with('success', 'Lead created quickly!');
