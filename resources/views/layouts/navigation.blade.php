@@ -3,8 +3,9 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="text-xl font-bold text-indigo-600">
-                        Properties By Desi
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+                        <img src="{{ asset('images/logo.jpg') }}" alt="Properties By Desi" class="h-10 w-10 rounded-full object-cover">
+                        <span class="text-xl font-bold text-indigo-600 hidden sm:inline">Properties By Desi</span>
                     </a>
                 </div>
 

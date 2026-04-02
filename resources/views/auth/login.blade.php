@@ -1,5 +1,6 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
+        <img src="{{ asset('images/logo.jpg') }}" alt="Properties By Desi" class="h-20 w-20 rounded-full object-cover mx-auto mb-3">
         <h1 class="text-2xl font-bold text-indigo-600">Properties By Desi</h1>
         <p class="text-sm text-gray-500 mt-1">Sign in to your account</p>
     </div>
