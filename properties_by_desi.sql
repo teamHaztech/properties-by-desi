@@ -1,30 +1,14 @@
-Warning: A partial dump from a server that has GTIDs will by default include the GTIDs of all transactions, even those that changed suppressed parts of the database. If you don't want to restore GTIDs, pass --set-gtid-purged=OFF. To make a complete dump, pass --all-databases --triggers --routines --events. 
-Warning: A dump from a server that has GTIDs enabled will by default include the GTIDs of all transactions, even those that were executed during its extraction and might not be represented in the dumped data. This might result in an inconsistent data dump. 
-In order to ensure a consistent backup of the database, pass --single-transaction or --lock-all-tables or --source-data. 
 -- MySQL dump 10.13  Distrib 9.6.0, for macos26.3 (arm64)
 --
 -- Host: localhost    Database: properties_by_desi
 -- ------------------------------------------------------
 -- Server version	9.6.0
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5aeeac06-2dca-11f1-8bab-38c42d966a4e:1-550';
 
 --
 -- Table structure for table `activity_logs`
@@ -32,7 +16,6 @@ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5aeeac06-2dca-11f1-8bab-38c42d966a4e:1-
 
 DROP TABLE IF EXISTS `activity_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `activity_logs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -65,7 +48,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache` (
   `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -90,7 +72,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cache_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache_locks` (
   `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -115,7 +96,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cities` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -144,7 +124,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `city_lead`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `city_lead` (
   `city_id` bigint unsigned NOT NULL,
   `lead_id` bigint unsigned NOT NULL,
@@ -170,7 +149,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clients` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -210,7 +188,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `communications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `communications` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -244,7 +221,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `documents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `documents` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `documentable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -280,7 +256,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -309,7 +284,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `follow_ups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `follow_ups` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -347,7 +321,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `job_batches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_batches` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -378,7 +351,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -407,7 +379,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `lead_property`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `lead_property` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -441,7 +412,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `leads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `leads` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -484,7 +454,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -509,7 +478,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `model_has_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `model_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -535,7 +503,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `model_has_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `model_has_roles` (
   `role_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -562,7 +529,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `notable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -595,7 +561,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notifications` (
   `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -625,7 +590,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `password_reset_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_reset_tokens` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -649,7 +613,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -677,7 +640,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `personal_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -711,7 +673,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `properties` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -762,7 +723,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `role_has_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `role_id` bigint unsigned NOT NULL,
@@ -789,7 +749,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -817,7 +776,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessions` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -837,7 +795,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('4bAi3IOALHME6Y5y6WAo855x7d9j8CijKkTIH6Fa',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJPZm1HY0JZRHh1OFppWXFhbnZUS2YzUlk4U0dqQ1dXclJUTVNuMnI4IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775053153),('fQxgTDrLDnrZsUBKC0YpAq6vRcfnkKGJ9i6zgEYw',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJVUXpMb2tLSkV6dGVyYXBBRERheWVHUU1FMjBJWHlVUm5rWnBoQ2dKIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL2xlYWRzIn0sIl9wcmV2aW91cyI6eyJ1cmwiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMlwvbG9naW4iLCJyb3V0ZSI6ImxvZ2luIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116064),('YjGTiLYRD6aiEenAIa6w5H9P1xQkInA34L3szyYe',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJ6Ym1nS2tlQ0d5cVFFWEJLVkhaN1lkNDJ2Qlh2MXJHd2RueldtcUZwIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sZWFkcyIsInJvdXRlIjoibGVhZHMuaW5kZXgifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6Nn0=',1775116074);
+INSERT INTO `sessions` VALUES ('4bAi3IOALHME6Y5y6WAo855x7d9j8CijKkTIH6Fa',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJPZm1HY0JZRHh1OFppWXFhbnZUS2YzUlk4U0dqQ1dXclJUTVNuMnI4IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775053153),('4jPsQzJ4WOEBPLA0QhErs2toxWUELC8l3u9xEH5b',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiIxQWpGYldBSnpMMThFUzNFWG9QTGV0SjBucE5vUlNtS3FtN09xMFBrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9kYXNoYm9hcmQiLCJyb3V0ZSI6ImRhc2hib2FyZCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjo2fQ==',1775116357),('fQxgTDrLDnrZsUBKC0YpAq6vRcfnkKGJ9i6zgEYw',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJVUXpMb2tLSkV6dGVyYXBBRERheWVHUU1FMjBJWHlVUm5rWnBoQ2dKIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL2xlYWRzIn0sIl9wcmV2aW91cyI6eyJ1cmwiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMlwvbG9naW4iLCJyb3V0ZSI6ImxvZ2luIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116064),('r2Dws0y95S47gCEVmAynBbKipRa230CHoIns1QjQ',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJsNGIxOXNhQUYwRjVFYUhUcTZNTUJ5VzAxa3hwRDRHVXpqTGJzelBrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9lbnF1aXJ5Iiwicm91dGUiOiJwdWJsaWMubGVhZC1mb3JtIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116239),('YjGTiLYRD6aiEenAIa6w5H9P1xQkInA34L3szyYe',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJ6Ym1nS2tlQ0d5cVFFWEJLVkhaN1lkNDJ2Qlh2MXJHd2RueldtcUZwIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sZWFkcyIsInJvdXRlIjoibGVhZHMuaW5kZXgifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6Nn0=',1775116074),('zTAAjnAhOY91cdI379K9AopQX9WCJbFSQyky9Lfg',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJWdUVxcVJKMjVzbERDaXV3anZqT1IwbFRKT1plQUttNFI2aWNkUlpOIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775116217);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -847,7 +805,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `taggables`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `taggables` (
   `tag_id` bigint unsigned NOT NULL,
   `taggable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -873,7 +830,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tags` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -900,7 +856,6 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -930,15 +885,11 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'Admin','admin','admin@propertiesbydesi.com','9876543210',NULL,1,NULL,'$2y$12$Z45.BtKzipFgpz65RhZ6n.R8qMGHwGvZPdwOFkiiO9c38EjU3Wo8a',NULL,'2026-04-01 08:49:01','2026-04-01 08:49:22',NULL),(2,'Rahul Sharma','rahul','rahul@propertiesbydesi.com','9876543211',NULL,1,NULL,'$2y$12$xJCRgx4hY04j4sTUACxtPeImrEv3.LliG7AYQ86fivaJko/wIFy2K',NULL,'2026-04-01 08:49:01','2026-04-01 08:49:22',NULL),(3,'Pasad','pasad','priya@propertiesbydesi.com','9876543212',NULL,1,NULL,'$2y$12$arlMP0e1bswp34xrgXPHVusjdXqQTNUNvKb1W4LzEG0Pz6lCpIX26',NULL,'2026-04-01 08:49:01','2026-04-01 08:49:22',NULL),(4,'Amit Desai','amit','amit@propertiesbydesi.com','9876543213',NULL,1,NULL,'$2y$12$WCF8b/YBbiPhoKZErht.G.bwlkUKSwCvmRhaelaLpIFj4xj25bJ1K',NULL,'2026-04-01 08:49:02','2026-04-01 08:49:22',NULL),(5,'Sneha Patel','sneha','sneha@propertiesbydesi.com','9876543214',NULL,1,NULL,'$2y$12$rsFAyjKyPNQvkGsJb6Ib1eCGdKkornQPEwpCfDbOD4yzeZC80N6aa',NULL,'2026-04-01 08:49:02','2026-04-01 08:49:22',NULL),(6,'Fiza','fiza','fiza@propertiesbydesi.com',NULL,NULL,1,NULL,'$2y$12$1Dx8PH6SvRK8ziKcECs0I.JgCLbe5lMaBfVzWV36QK4a8mjQLA8x.',NULL,'2026-04-01 08:49:22','2026-04-01 08:49:22',NULL),(7,'Mohsin','mohsin','mohsin@propertiesbydesi.com',NULL,NULL,1,NULL,'$2y$12$z97PItQMZTE.r/oyCstcDOsMh9OemZVxnNVY/DGKtKCdu82YFxDxa',NULL,'2026-04-01 08:49:23','2026-04-01 08:49:23',NULL),(8,'Mufeez','mufeez','mufeez@propertiesbydesi.com',NULL,NULL,1,NULL,'$2y$12$ZYOaYfHmICKJPh.Yuk7guO5tM/riAy.iOECwuf/o2uL9jlZJR5Pg.',NULL,'2026-04-01 08:49:23','2026-04-01 08:49:23',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-02 13:19:23
+-- Dump completed on 2026-04-02 13:31:00
