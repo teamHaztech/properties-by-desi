@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Lead;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -11,8 +12,9 @@ class PublicLeadController extends Controller
     public function show()
     {
         $properties = Property::where('status', 'available')->orderBy('title')->get();
+        $cities = City::active()->orderBy('name')->get();
 
-        return view('public.lead-form', compact('properties'));
+        return view('public.lead-form', compact('properties', 'cities'));
     }
 
     public function store(Request $request)
@@ -28,6 +30,8 @@ class PublicLeadController extends Controller
             'message' => 'nullable|string|max:1000',
             'property_ids' => 'nullable|array',
             'property_ids.*' => 'exists:properties,id',
+            'city_ids' => 'nullable|array',
+            'city_ids.*' => 'exists:cities,id',
         ]);
 
         // Clean phone
@@ -38,6 +42,10 @@ class PublicLeadController extends Controller
         // Check duplicate
         $existing = Lead::where('phone', $phone)->first();
         if ($existing) {
+            // Still attach new city preferences if any
+            if (!empty($data['city_ids'])) {
+                $existing->cities()->syncWithoutDetaching($data['city_ids']);
+            }
             return back()
                 ->withInput()
                 ->with('duplicate', true)
@@ -59,7 +67,7 @@ class PublicLeadController extends Controller
         // Add message as a note
         if (!empty($data['message'])) {
             $lead->notes()->create([
-                'user_id' => 1, // System/admin user
+                'user_id' => 1,
                 'content' => "Customer message: " . $data['message'],
             ]);
         }
@@ -67,6 +75,11 @@ class PublicLeadController extends Controller
         // Attach interested properties
         if (!empty($data['property_ids'])) {
             $lead->properties()->attach($data['property_ids'], ['status' => 'suggested']);
+        }
+
+        // Attach preferred cities
+        if (!empty($data['city_ids'])) {
+            $lead->cities()->attach($data['city_ids']);
         }
 
         return redirect()->route('public.lead-form')

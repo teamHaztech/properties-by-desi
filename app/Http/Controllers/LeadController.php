@@ -6,6 +6,7 @@ use App\Enums\LeadSource;
 use App\Enums\LeadStatus;
 use App\Http\Requests\Lead\StoreLeadRequest;
 use App\Http\Requests\Lead\UpdateLeadRequest;
+use App\Models\City;
 use App\Models\Lead;
 use App\Models\Property;
 use App\Models\User;
@@ -20,12 +21,14 @@ class LeadController extends Controller
     {
         $leads = $this->leadService->getFilteredLeads($request->all());
         $agents = User::role('sales_agent')->get();
+        $cities = City::active()->orderBy('name')->get();
 
         return view('leads.index', [
             'leads' => $leads,
             'agents' => $agents,
             'statuses' => LeadStatus::cases(),
             'sources' => LeadSource::cases(),
+            'cities' => $cities,
             'filters' => $request->all(),
         ]);
     }
@@ -44,11 +47,13 @@ class LeadController extends Controller
     {
         $agents = User::role('sales_agent')->get();
         $properties = Property::where('status', 'available')->orderBy('title')->get();
+        $cities = City::active()->orderBy('name')->get();
 
         return view('leads.create', [
             'agents' => $agents,
             'sources' => LeadSource::cases(),
             'properties' => $properties,
+            'cities' => $cities,
         ]);
     }
 
@@ -70,6 +75,11 @@ class LeadController extends Controller
             $lead->properties()->attach($request->property_ids, ['status' => 'suggested']);
         }
 
+        // Attach selected cities
+        if ($request->has('city_ids')) {
+            $lead->cities()->attach($request->city_ids);
+        }
+
         return redirect()->route('leads.show', $lead)
             ->with('success', 'Lead created successfully.');
     }
@@ -83,6 +93,7 @@ class LeadController extends Controller
             'communications.user',
             'followUps.user',
             'properties',
+            'cities',
             'activities.user',
         ]);
 
@@ -91,19 +102,29 @@ class LeadController extends Controller
 
     public function edit(Lead $lead)
     {
+        $lead->load('cities');
         $agents = User::role('sales_agent')->get();
+        $cities = City::active()->orderBy('name')->get();
 
         return view('leads.edit', [
             'lead' => $lead,
             'agents' => $agents,
             'statuses' => LeadStatus::cases(),
             'sources' => LeadSource::cases(),
+            'cities' => $cities,
         ]);
     }
 
     public function update(UpdateLeadRequest $request, Lead $lead)
     {
         $this->leadService->updateLead($lead, $request->validated());
+
+        // Sync cities
+        if ($request->has('city_ids')) {
+            $lead->cities()->sync($request->city_ids);
+        } else {
+            $lead->cities()->detach();
+        }
 
         return redirect()->route('leads.show', $lead)
             ->with('success', 'Lead updated successfully.');

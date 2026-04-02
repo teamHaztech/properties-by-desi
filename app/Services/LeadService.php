@@ -15,7 +15,7 @@ class LeadService
 {
     public function getFilteredLeads(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        $query = Lead::with(['assignedAgent'])
+        $query = Lead::with(['assignedAgent', 'cities'])
             ->search($filters['search'] ?? null);
 
         if (!empty($filters['status'])) {
@@ -32,6 +32,12 @@ class LeadService
 
         if (!empty($filters['urgency'])) {
             $query->where('urgency', $filters['urgency']);
+        }
+
+        if (!empty($filters['city_id'])) {
+            $query->whereHas('cities', function ($q) use ($filters) {
+                $q->where('cities.id', $filters['city_id']);
+            });
         }
 
         if (!empty($filters['date_from'])) {

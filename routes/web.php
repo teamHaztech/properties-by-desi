@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\LeadImportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OwnerDashboardController;
@@ -39,6 +40,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Properties (CRUD restricted to admin in FormRequest)
     Route::resource('properties', PropertyController::class);
+
+    // Cities
+    Route::get('/cities', [CityController::class, 'index'])->name('cities.index');
+    Route::post('/cities', [CityController::class, 'store'])->name('cities.store');
+    Route::patch('/cities/{city}/toggle', [CityController::class, 'toggle'])->name('cities.toggle');
+    Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('cities.destroy');
+    Route::get('/cities/{city}/leads', [CityController::class, 'leads'])->name('cities.leads');
 
     // Follow-ups
     Route::post('/leads/{lead}/follow-ups', [FollowUpController::class, 'store'])->name('follow-ups.store');

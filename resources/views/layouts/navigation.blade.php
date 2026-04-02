@@ -22,6 +22,9 @@
                     <x-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
                         Properties
                     </x-nav-link>
+                    <x-nav-link :href="route('cities.index')" :active="request()->routeIs('cities.*')">
+                        Cities
+                    </x-nav-link>
                     @role('super_admin')
                     <x-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.*')">
                         Owner Panel
@@ -90,6 +93,7 @@
             <x-responsive-nav-link :href="route('leads.index')" :active="request()->routeIs('leads.*')">Leads</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('leads.pipeline')" :active="request()->routeIs('leads.pipeline')">Pipeline</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">Properties</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('cities.index')" :active="request()->routeIs('cities.*')">Cities</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('leads.quick-create')">+ Quick Lead</x-responsive-nav-link>
             @role('super_admin')
             <x-responsive-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.*')">Owner Panel</x-responsive-nav-link>

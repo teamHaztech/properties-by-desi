@@ -168,6 +168,23 @@
 
                         </div>
 
+                            {{-- Preferred Locations --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Locations</label>
+                                <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                                    @foreach ($cities as $city)
+                                        <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border cursor-pointer transition
+                                            {{ in_array($city->id, old('city_ids', [])) ? 'bg-indigo-100 border-indigo-300 text-indigo-700' : 'bg-white border-gray-200 text-gray-600 hover:border-indigo-300 hover:bg-indigo-50' }}">
+                                            <input type="checkbox" name="city_ids[]" value="{{ $city->id }}"
+                                                {{ in_array($city->id, old('city_ids', [])) ? 'checked' : '' }}
+                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5">
+                                            <span class="text-sm">{{ $city->name }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Select one or more preferred locations.</p>
+                            </div>
+
                         {{-- Interested Properties --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Interested Properties</label>

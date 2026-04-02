@@ -134,6 +134,20 @@
                             </select>
                         </div>
 
+                        {{-- City --}}
+                        <div>
+                            <label for="city_id" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                            <select name="city_id" id="city_id"
+                                    class="w-full border-gray-300 rounded-md shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="">All Cities</option>
+                                @foreach ($cities as $city)
+                                    <option value="{{ $city->id }}" @selected(($filters['city_id'] ?? '') == $city->id)>
+                                        {{ $city->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         {{-- Date From --}}
                         <div>
                             <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
@@ -187,6 +201,15 @@
                                         </a>
                                         @if ($lead->email)
                                             <div class="text-xs text-gray-500">{{ $lead->email }}</div>
+                                        @endif
+                                        @if ($lead->cities->isNotEmpty())
+                                            <div class="flex flex-wrap gap-1 mt-1">
+                                                @foreach ($lead->cities as $city)
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 text-indigo-700">
+                                                        {{ $city->name }}
+                                                    </span>
+                                                @endforeach
+                                            </div>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -267,6 +290,15 @@
                                 <a href="{{ route('leads.show', $lead) }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-900">
                                     {{ $lead->name }}
                                 </a>
+                                @if ($lead->cities->isNotEmpty())
+                                    <div class="flex flex-wrap gap-1 mt-0.5">
+                                        @foreach ($lead->cities as $city)
+                                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 text-indigo-700">
+                                                {{ $city->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <p class="text-sm text-gray-600 mt-0.5">{{ $lead->phone }}</p>
                                 @if ($lead->email)
                                     <p class="text-xs text-gray-500">{{ $lead->email }}</p>

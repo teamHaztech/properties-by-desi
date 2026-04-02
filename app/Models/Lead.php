@@ -87,6 +87,11 @@ class Lead extends Model
         return $this->morphMany(Tag::class, 'taggable');
     }
 
+    public function cities(): BelongsToMany
+    {
+        return $this->belongsToMany(City::class, 'city_lead');
+    }
+
     public function activities(): MorphMany
     {
         return $this->morphMany(ActivityLog::class, 'subject');

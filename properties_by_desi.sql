@@ -24,7 +24,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5aeeac06-2dca-11f1-8bab-38c42d966a4e:1-423';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5aeeac06-2dca-11f1-8bab-38c42d966a4e:1-472';
 
 --
 -- Table structure for table `activity_logs`
@@ -107,6 +107,61 @@ CREATE TABLE `cache_locks` (
 LOCK TABLES `cache_locks` WRITE;
 /*!40000 ALTER TABLE `cache_locks` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cache_locks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cities`
+--
+
+DROP TABLE IF EXISTS `cities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cities` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Goa',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cities_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cities`
+--
+
+LOCK TABLES `cities` WRITE;
+/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+INSERT INTO `cities` VALUES (1,'Panjim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(2,'Mapusa','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(3,'Calangute','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(4,'Candolim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(5,'Anjuna','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(6,'Vagator','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(7,'Assagao','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(8,'Siolim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(9,'Morjim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(10,'Arambol','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(11,'Mandrem','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(12,'Porvorim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(13,'Tivim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(14,'Aldona','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(15,'Saligao','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(16,'Sangolda','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(17,'Guirim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(18,'Pilerne','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(19,'Reis Magos','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(20,'Nerul','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(21,'Dona Paula','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(22,'Bambolim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(23,'Margao','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(24,'Vasco da Gama','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(25,'Colva','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(26,'Benaulim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(27,'Palolem','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(28,'Canacona','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(29,'Quepem','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(30,'Cuncolim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(31,'Loutolim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(32,'Rachol','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(33,'Cortalim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(34,'Sancoale','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(35,'Dabolim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(36,'Old Goa','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(37,'Ponda','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(38,'Bicholim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(39,'Pernem','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(40,'Sanguem','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(41,'Sanquelim','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(42,'Valpoi','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00'),(43,'Curchorem','Goa',1,'2026-04-02 02:08:00','2026-04-02 02:08:00');
+/*!40000 ALTER TABLE `cities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `city_lead`
+--
+
+DROP TABLE IF EXISTS `city_lead`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `city_lead` (
+  `city_id` bigint unsigned NOT NULL,
+  `lead_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`city_id`,`lead_id`),
+  KEY `city_lead_lead_id_foreign` (`lead_id`),
+  CONSTRAINT `city_lead_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `city_lead_lead_id_foreign` FOREIGN KEY (`lead_id`) REFERENCES `leads` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `city_lead`
+--
+
+LOCK TABLES `city_lead` WRITE;
+/*!40000 ALTER TABLE `city_lead` DISABLE KEYS */;
+/*!40000 ALTER TABLE `city_lead` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -435,7 +490,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,7 +499,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2026_04_01_063837_create_permission_tables',1),(5,'2026_04_01_064336_create_personal_access_tokens_table',1),(6,'2026_04_01_093442_create_notifications_table',1),(7,'2026_04_01_100001_add_fields_to_users_table',1),(8,'2026_04_01_100002_create_leads_table',1),(9,'2026_04_01_100003_create_clients_table',1),(10,'2026_04_01_100004_create_properties_table',1),(11,'2026_04_01_100005_create_lead_property_table',1),(12,'2026_04_01_100006_create_notes_table',1),(13,'2026_04_01_100007_create_follow_ups_table',1),(14,'2026_04_01_100008_create_communications_table',1),(15,'2026_04_01_100009_create_documents_table',1),(16,'2026_04_01_100010_create_tags_table',1),(17,'2026_04_01_100011_create_activity_logs_table',1),(18,'2026_04_01_200001_add_username_to_users_table',1);
+INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2026_04_01_063837_create_permission_tables',1),(5,'2026_04_01_064336_create_personal_access_tokens_table',1),(6,'2026_04_01_093442_create_notifications_table',1),(7,'2026_04_01_100001_add_fields_to_users_table',1),(8,'2026_04_01_100002_create_leads_table',1),(9,'2026_04_01_100003_create_clients_table',1),(10,'2026_04_01_100004_create_properties_table',1),(11,'2026_04_01_100005_create_lead_property_table',1),(12,'2026_04_01_100006_create_notes_table',1),(13,'2026_04_01_100007_create_follow_ups_table',1),(14,'2026_04_01_100008_create_communications_table',1),(15,'2026_04_01_100009_create_documents_table',1),(16,'2026_04_01_100010_create_tags_table',1),(17,'2026_04_01_100011_create_activity_logs_table',1),(18,'2026_04_01_200001_add_username_to_users_table',1),(19,'2026_04_02_100001_create_cities_table',2);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -886,4 +941,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-02 11:57:54
+-- Dump completed on 2026-04-02 13:12:47
