@@ -105,45 +105,8 @@
                                 @enderror
                             </div>
 
-                            {{-- Budget Range Slider --}}
-                            <div x-data="{
-                                min: {{ old('budget_min', 3000000) }},
-                                max: {{ old('budget_max', 20000000) }},
-                                formatIndian(val) {
-                                    if (val >= 10000000) return (val / 10000000).toFixed(1) + ' Cr';
-                                    if (val >= 100000) return (val / 100000).toFixed(0) + ' L';
-                                    return val.toLocaleString('en-IN');
-                                }
-                            }">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Budget Range</label>
-                                <div class="flex items-center justify-between text-sm text-indigo-700 font-semibold mb-2">
-                                    <span>₹ <span x-text="formatIndian(min)"></span></span>
-                                    <span>to</span>
-                                    <span>₹ <span x-text="formatIndian(max)"></span></span>
-                                </div>
-                                <div class="space-y-3">
-                                    <div>
-                                        <label class="text-xs text-gray-500">Min Budget</label>
-                                        <input type="range" name="budget_min" x-model="min"
-                                            min="1000000" max="1000000000" step="500000"
-                                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
-                                    </div>
-                                    <div>
-                                        <label class="text-xs text-gray-500">Max Budget</label>
-                                        <input type="range" name="budget_max" x-model="max"
-                                            min="1000000" max="1000000000" step="500000"
-                                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
-                                    </div>
-                                </div>
-                                <div class="flex justify-between text-[10px] text-gray-400 mt-1">
-                                    <span>10 L</span>
-                                    <span>1 Cr</span>
-                                    <span>10 Cr</span>
-                                    <span>100 Cr</span>
-                                </div>
-                                @error('budget_min') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                                @error('budget_max') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                            </div>
+                            {{-- Budget Range Dual Slider --}}
+                            @include('components.budget-slider', ['defaultMin' => old('budget_min', 3000000), 'defaultMax' => old('budget_max', 20000000)])
 
                             {{-- Preferred Property Type --}}
                             <div>
