@@ -5,7 +5,7 @@
                 <a href="{{ route('properties.index') }}" class="text-sm text-indigo-600 hover:text-indigo-500">&larr; Back to Inventory</a>
                 <h2 class="mt-1 text-xl font-semibold leading-tight text-gray-800">{{ $property->title }}</h2>
             </div>
-            @role('admin')
+            @role(['admin', 'super_admin'])
                 <div class="flex items-center gap-3">
                     <a href="{{ route('properties.edit', $property) }}"
                        class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
