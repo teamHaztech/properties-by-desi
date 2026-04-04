@@ -67,26 +67,29 @@ class Property extends Model
 
     protected static function calculatePricing(Property $property): void
     {
-        // Auto-calc total plot price from size × price_per_sqm
+        // Auto-calc total plot price from size × price_per_sqm (plots only)
         if ($property->size_sqm && $property->price_per_sqm) {
             $property->total_plot_price = $property->size_sqm * $property->price_per_sqm;
         }
 
-        // Auto-calc commission
+        // If both quoted_price and owner_expected_price are set, margin mode — calc commission from difference
         if ($property->quoted_price && $property->owner_expected_price) {
             $property->commission_amount = $property->quoted_price - $property->owner_expected_price;
             if ($property->quoted_price > 0) {
-                $property->commission_percent = ($property->commission_amount / $property->quoted_price) * 100;
+                $property->commission_percent = round(($property->commission_amount / $property->quoted_price) * 100, 2);
             }
-        } elseif ($property->owner_expected_price && $property->commission_percent) {
-            // Calculate quoted price from owner price + commission %
+        }
+        // If only owner price + commission %, calc the rest
+        elseif ($property->owner_expected_price && $property->commission_percent && !$property->quoted_price) {
             $property->commission_amount = $property->owner_expected_price * ($property->commission_percent / 100);
             $property->quoted_price = $property->owner_expected_price + $property->commission_amount;
         }
 
-        // Set display price as quoted price if available
-        if ($property->quoted_price && !$property->isDirty('price')) {
+        // Set display price
+        if ($property->quoted_price) {
             $property->price = $property->quoted_price;
+        } elseif ($property->owner_expected_price) {
+            $property->price = $property->owner_expected_price;
         }
     }
 

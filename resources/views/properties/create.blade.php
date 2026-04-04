@@ -23,19 +23,39 @@
                 type: '{{ old('type', '') }}',
                 city_id: '{{ old('city_id', '') }}',
                 location: '{{ old('location', '') }}',
+                commission_mode: '{{ old('commission_mode', 'percent') }}',
 
                 size_sqm: {{ old('size_sqm', 0) ?: 0 }},
                 price_per_sqm: {{ old('price_per_sqm', 0) ?: 0 }},
                 owner_expected_price: {{ old('owner_expected_price', 0) ?: 0 }},
+                selling_price: {{ old('quoted_price', 0) ?: 0 }},
                 commission_percent: {{ old('commission_percent', 2) ?: 2 }},
                 is_negotiable: {{ old('is_negotiable') ? 'true' : 'false' }},
                 negotiable_price: {{ old('negotiable_price', 0) ?: 0 }},
 
+                get isPlot() { return this.type === 'plot'; },
                 get showSubType() { return this.type === 'plot'; },
                 get showBedBath() { return this.type !== '' && this.type !== 'plot'; },
                 get total_plot_price() { return (Number(this.size_sqm) || 0) * (Number(this.price_per_sqm) || 0); },
-                get commission_amount() { return (Number(this.owner_expected_price) || 0) * (Number(this.commission_percent) || 0) / 100; },
-                get quoted_price() { return (Number(this.owner_expected_price) || 0) + this.commission_amount; },
+
+                get commission_amount() {
+                    if (this.commission_mode === 'margin') {
+                        return (Number(this.selling_price) || 0) - (Number(this.owner_expected_price) || 0);
+                    }
+                    return (Number(this.owner_expected_price) || 0) * (Number(this.commission_percent) || 0) / 100;
+                },
+                get quoted_price() {
+                    if (this.commission_mode === 'margin') {
+                        return Number(this.selling_price) || 0;
+                    }
+                    return (Number(this.owner_expected_price) || 0) + this.commission_amount;
+                },
+                get calc_commission_percent() {
+                    if (this.commission_mode === 'margin' && this.selling_price > 0) {
+                        return ((this.commission_amount / this.selling_price) * 100).toFixed(1);
+                    }
+                    return this.commission_percent;
+                },
 
                 formatIndian(val) {
                     val = Number(val) || 0;
@@ -133,7 +153,7 @@
                     <h3 class="mb-4 text-lg font-semibold text-gray-900">Size & Pricing</h3>
                     <div class="space-y-5">
 
-                        {{-- Size --}}
+                        {{-- Size (always shown) --}}
                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
                                 <label for="size_sqm" class="block text-sm font-medium text-gray-700">Size (sq.m)</label>
@@ -150,19 +170,24 @@
                             </div>
                         </div>
 
-                        {{-- Price per sq.m & Total Plot Price --}}
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <div>
-                                <label for="price_per_sqm" class="block text-sm font-medium text-gray-700">Price per sq.m</label>
-                                <input type="number" name="price_per_sqm" id="price_per_sqm" x-model.number="price_per_sqm" step="0.01" min="0"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                @error('price_per_sqm') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Total Plot Price</label>
-                                <div class="mt-1 flex h-[38px] items-center rounded-md border border-gray-200 bg-gray-50 px-3 text-sm font-medium text-gray-700"
-                                     x-text="formatIndian(total_plot_price)"></div>
-                                <input type="hidden" name="total_plot_price" :value="total_plot_price">
+                        {{-- PLOT: Price per sq.m & auto-calc total --}}
+                        <div x-show="isPlot" x-transition x-cloak>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="price_per_sqm" class="block text-sm font-medium text-gray-700">Rate per sq.m (₹)</label>
+                                    <input type="number" name="price_per_sqm" id="price_per_sqm" x-model.number="price_per_sqm" step="1" min="0"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('price_per_sqm') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Total Plot Price</label>
+                                    <div class="mt-1 flex h-[38px] items-center rounded-md border border-purple-200 bg-purple-50 px-3 text-sm font-semibold text-purple-700"
+                                         x-text="total_plot_price > 0 ? formatIndian(total_plot_price) : '—'"></div>
+                                    <p class="text-xs text-gray-400 mt-1" x-show="total_plot_price > 0">
+                                        <span x-text="size_sqm"></span> sq.m × ₹<span x-text="Number(price_per_sqm).toLocaleString('en-IN')"></span>
+                                    </p>
+                                    <input type="hidden" name="total_plot_price" :value="total_plot_price">
+                                </div>
                             </div>
                         </div>
 
@@ -170,37 +195,78 @@
 
                         {{-- Owner Expected Price --}}
                         <div>
-                            <label for="owner_expected_price" class="block text-sm font-medium text-gray-700">Owner Expected Price</label>
+                            <label for="owner_expected_price" class="block text-sm font-medium text-gray-700">Owner Expected Price (₹)</label>
                             <p class="text-xs text-gray-500">What the owner wants to receive</p>
-                            <input type="number" name="owner_expected_price" id="owner_expected_price" x-model.number="owner_expected_price" step="0.01" min="0"
+                            <input type="number" name="owner_expected_price" id="owner_expected_price" x-model.number="owner_expected_price" step="1" min="0"
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             @error('owner_expected_price') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                         </div>
 
-                        {{-- Commission --}}
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <div>
-                                <label for="commission_percent" class="block text-sm font-medium text-gray-700">Commission %</label>
-                                <input type="number" name="commission_percent" id="commission_percent" x-model.number="commission_percent" step="0.1" min="0" max="100"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                @error('commission_percent') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Commission Amount</label>
-                                <div class="mt-1 flex h-[38px] items-center rounded-md border border-gray-200 bg-gray-50 px-3 text-sm font-medium text-gray-700"
-                                     x-text="formatIndian(commission_amount)"></div>
-                                <input type="hidden" name="commission_amount" :value="commission_amount">
+                        {{-- Commission Mode Toggle --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">How do you want to set commission?</label>
+                            <div class="flex gap-4">
+                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="commission_mode" value="percent" x-model="commission_mode"
+                                           class="text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-sm" :class="commission_mode === 'percent' ? 'font-semibold text-indigo-700' : 'text-gray-600'">
+                                        Fixed % (default 2%)
+                                    </span>
+                                </label>
+                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="commission_mode" value="margin" x-model="commission_mode"
+                                           class="text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-sm" :class="commission_mode === 'margin' ? 'font-semibold text-indigo-700' : 'text-gray-600'">
+                                        Set selling price (margin = our cut)
+                                    </span>
+                                </label>
                             </div>
                         </div>
 
-                        {{-- Quoted Price --}}
+                        {{-- Option A: Commission % --}}
+                        <div x-show="commission_mode === 'percent'" x-transition x-cloak>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="commission_percent" class="block text-sm font-medium text-gray-700">Commission %</label>
+                                    <input type="number" name="commission_percent" id="commission_percent" x-model.number="commission_percent" step="0.1" min="0" max="100"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Commission Amount</label>
+                                    <div class="mt-1 flex h-[38px] items-center rounded-md border border-green-200 bg-green-50 px-3 text-sm font-semibold text-green-700"
+                                         x-text="formatIndian(commission_amount)"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Option B: Set selling price directly --}}
+                        <div x-show="commission_mode === 'margin'" x-transition x-cloak>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label for="selling_price" class="block text-sm font-medium text-gray-700">Selling Price / We Quote (₹)</label>
+                                    <input type="number" id="selling_price" x-model.number="selling_price" step="1" min="0"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Our Margin</label>
+                                    <div class="mt-1 flex h-[38px] items-center rounded-md border border-green-200 bg-green-50 px-3 text-sm font-semibold"
+                                         :class="commission_amount >= 0 ? 'text-green-700' : 'text-red-700'"
+                                         x-text="formatIndian(commission_amount) + ' (' + calc_commission_percent + '%)'"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Quoted Price (display) --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Quoted Price / Our Price</label>
-                            <p class="text-xs text-gray-500">Owner price + commission -- shown to customers</p>
-                            <div class="mt-1 flex h-[38px] items-center rounded-md border border-indigo-200 bg-indigo-50 px-3 text-sm font-semibold text-indigo-700"
-                                 x-text="formatIndian(quoted_price)"></div>
+                            <label class="block text-sm font-medium text-gray-700">Final Quoted Price (shown to customer)</label>
+                            <div class="mt-1 flex h-[42px] items-center rounded-md border-2 border-indigo-300 bg-indigo-50 px-4 text-base font-bold text-indigo-700"
+                                 x-text="quoted_price > 0 ? formatIndian(quoted_price) : '—'"></div>
                             <input type="hidden" name="quoted_price" :value="quoted_price">
-                            <input type="hidden" name="price" :value="quoted_price">
+                            <input type="hidden" name="price" :value="quoted_price > 0 ? quoted_price : (owner_expected_price || 0)">
+                            <input type="hidden" name="commission_amount" :value="commission_amount">
+                            <template x-if="commission_mode === 'margin'">
+                                <input type="hidden" name="commission_percent" :value="calc_commission_percent">
+                            </template>
                         </div>
 
                         {{-- Negotiable --}}
@@ -214,26 +280,31 @@
 
                             <div x-show="is_negotiable" x-transition x-cloak>
                                 <label for="negotiable_price" class="block text-sm font-medium text-gray-700">Negotiable Price (lowest we'll go)</label>
-                                <input type="number" name="negotiable_price" id="negotiable_price" x-model.number="negotiable_price" step="0.01" min="0"
+                                <input type="number" name="negotiable_price" id="negotiable_price" x-model.number="negotiable_price" step="1" min="0"
                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 @error('negotiable_price') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         {{-- Summary Card --}}
-                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4" x-show="owner_expected_price > 0">
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4" x-show="owner_expected_price > 0" x-transition>
                             <h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Pricing Summary</h4>
                             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                                <template x-if="isPlot && total_plot_price > 0">
+                                    <span>Plot value: <strong class="text-purple-700" x-text="formatIndian(total_plot_price)"></strong>
+                                        <span class="text-gray-300">|</span>
+                                    </span>
+                                </template>
                                 <span>Owner wants: <strong class="text-gray-900" x-text="formatIndian(owner_expected_price)"></strong></span>
                                 <span class="text-gray-300">|</span>
-                                <span>Our cut: <strong class="text-gray-900" x-text="formatIndian(commission_amount)"></strong>
-                                    (<span x-text="commission_percent"></span>%)</span>
+                                <span>Our cut: <strong class="text-green-700" x-text="formatIndian(Math.abs(commission_amount))"></strong>
+                                    (<span x-text="calc_commission_percent"></span>%)</span>
                                 <span class="text-gray-300">|</span>
                                 <span>We quote: <strong class="text-indigo-700" x-text="formatIndian(quoted_price)"></strong></span>
                                 <template x-if="is_negotiable && negotiable_price > 0">
                                     <span>
                                         <span class="text-gray-300">|</span>
-                                        Negotiable down to: <strong class="text-amber-700" x-text="formatIndian(negotiable_price)"></strong>
+                                        Lowest: <strong class="text-amber-700" x-text="formatIndian(negotiable_price)"></strong>
                                     </span>
                                 </template>
                             </div>
