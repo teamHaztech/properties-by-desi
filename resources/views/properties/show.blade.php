@@ -56,11 +56,64 @@
                 </div>
             </div>
 
+            {{-- Pricing Breakdown (Super Admin / Admin only) --}}
+            @role(['admin', 'super_admin'])
+            @if($property->owner_expected_price || $property->quoted_price)
+            <div class="rounded-lg bg-white p-6 shadow border-l-4 border-green-500">
+                <h3 class="mb-4 text-lg font-semibold text-gray-900">Pricing Breakdown</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                    @if($property->owner_expected_price)
+                    <div class="text-center p-3 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-500">Owner Expects</p>
+                        <p class="text-lg font-bold text-gray-800">{{ $property->formatted_owner_price }}</p>
+                    </div>
+                    @endif
+                    @if($property->commission_amount)
+                    <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <p class="text-xs text-gray-500">Our Commission</p>
+                        <p class="text-lg font-bold text-green-700">{{ \App\Models\Property::formatIndian($property->commission_amount) }}</p>
+                        <p class="text-xs text-green-600">({{ $property->commission_percent }}%)</p>
+                    </div>
+                    @endif
+                    @if($property->quoted_price)
+                    <div class="text-center p-3 bg-indigo-50 rounded-lg">
+                        <p class="text-xs text-gray-500">We Quote</p>
+                        <p class="text-lg font-bold text-indigo-700">{{ $property->formatted_quoted_price }}</p>
+                    </div>
+                    @endif
+                    @if($property->total_plot_price)
+                    <div class="text-center p-3 bg-purple-50 rounded-lg">
+                        <p class="text-xs text-gray-500">Plot Total (Size × Rate)</p>
+                        <p class="text-lg font-bold text-purple-700">{{ \App\Models\Property::formatIndian($property->total_plot_price) }}</p>
+                        <p class="text-xs text-purple-600">{{ $property->size_sqm }} sq.m × ₹{{ number_format($property->price_per_sqm) }}</p>
+                    </div>
+                    @endif
+                    <div class="text-center p-3 {{ $property->is_negotiable ? 'bg-yellow-50' : 'bg-red-50' }} rounded-lg">
+                        <p class="text-xs text-gray-500">Negotiable?</p>
+                        <p class="text-lg font-bold {{ $property->is_negotiable ? 'text-yellow-700' : 'text-red-700' }}">
+                            {{ $property->is_negotiable ? 'Yes' : 'No' }}
+                        </p>
+                    </div>
+                    @if($property->is_negotiable && $property->negotiable_price)
+                    <div class="text-center p-3 bg-orange-50 rounded-lg">
+                        <p class="text-xs text-gray-500">Lowest We Go</p>
+                        <p class="text-lg font-bold text-orange-700">{{ \App\Models\Property::formatIndian($property->negotiable_price) }}</p>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
+            @endrole
+
             {{-- Details Card --}}
             <div class="rounded-lg bg-white p-6 shadow">
                 <h3 class="mb-4 text-lg font-semibold text-gray-900">Property Details</h3>
 
                 <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">City</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $property->city?->name ?? $property->location }}</dd>
+                    </div>
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Location</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ $property->location }}</dd>

@@ -7,6 +7,7 @@ use App\Enums\PropertySubType;
 use App\Enums\PropertyType;
 use App\Http\Requests\Property\StorePropertyRequest;
 use App\Http\Requests\Property\UpdatePropertyRequest;
+use App\Models\City;
 use App\Models\Property;
 use App\Services\PropertyService;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class PropertyController extends Controller
             'types' => PropertyType::cases(),
             'subTypes' => PropertySubType::cases(),
             'statuses' => PropertyStatus::cases(),
+            'cities' => City::active()->orderBy('name')->get(),
             'filters' => $request->all(),
             'stats' => $this->propertyService->getStats(),
         ]);
@@ -34,12 +36,21 @@ class PropertyController extends Controller
         return view('properties.create', [
             'types' => PropertyType::cases(),
             'subTypes' => PropertySubType::cases(),
+            'cities' => City::active()->orderBy('name')->get(),
         ]);
     }
 
     public function store(StorePropertyRequest $request)
     {
-        $property = $this->propertyService->createProperty($request->validated());
+        $data = $request->validated();
+        $data['is_negotiable'] = $request->boolean('is_negotiable');
+
+        // Set location from city if not provided
+        if (!empty($data['city_id']) && empty($data['location'])) {
+            $data['location'] = City::find($data['city_id'])->name ?? '';
+        }
+
+        $property = $this->propertyService->createProperty($data);
 
         return redirect()->route('properties.show', $property)
             ->with('success', 'Property added successfully.');
@@ -47,7 +58,7 @@ class PropertyController extends Controller
 
     public function show(Property $property)
     {
-        $property->load(['addedBy', 'leads.assignedAgent', 'documents']);
+        $property->load(['addedBy', 'city', 'leads.assignedAgent', 'documents']);
 
         return view('properties.show', compact('property'));
     }
@@ -59,12 +70,16 @@ class PropertyController extends Controller
             'types' => PropertyType::cases(),
             'subTypes' => PropertySubType::cases(),
             'statuses' => PropertyStatus::cases(),
+            'cities' => City::active()->orderBy('name')->get(),
         ]);
     }
 
     public function update(UpdatePropertyRequest $request, Property $property)
     {
-        $this->propertyService->updateProperty($property, $request->validated());
+        $data = $request->validated();
+        $data['is_negotiable'] = $request->boolean('is_negotiable');
+
+        $this->propertyService->updateProperty($property, $data);
 
         return redirect()->route('properties.show', $property)
             ->with('success', 'Property updated successfully.');

@@ -16,6 +16,7 @@
 
 DROP TABLE IF EXISTS `activity_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `activity_logs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -48,6 +49,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache` (
   `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -72,6 +74,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cache_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache_locks` (
   `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -96,6 +99,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cities` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -124,6 +128,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `city_lead`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `city_lead` (
   `city_id` bigint unsigned NOT NULL,
   `lead_id` bigint unsigned NOT NULL,
@@ -149,6 +154,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clients` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -188,6 +194,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `communications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `communications` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -221,6 +228,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `documents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `documents` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `documentable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -256,6 +264,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -284,6 +293,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `follow_ups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `follow_ups` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -321,6 +331,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `job_batches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_batches` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -351,6 +362,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -379,6 +391,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `lead_property`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `lead_property` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `lead_id` bigint unsigned NOT NULL,
@@ -412,6 +425,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `leads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `leads` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -454,12 +468,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -468,7 +483,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2026_04_01_063837_create_permission_tables',1),(5,'2026_04_01_064336_create_personal_access_tokens_table',1),(6,'2026_04_01_093442_create_notifications_table',1),(7,'2026_04_01_100001_add_fields_to_users_table',1),(8,'2026_04_01_100002_create_leads_table',1),(9,'2026_04_01_100003_create_clients_table',1),(10,'2026_04_01_100004_create_properties_table',1),(11,'2026_04_01_100005_create_lead_property_table',1),(12,'2026_04_01_100006_create_notes_table',1),(13,'2026_04_01_100007_create_follow_ups_table',1),(14,'2026_04_01_100008_create_communications_table',1),(15,'2026_04_01_100009_create_documents_table',1),(16,'2026_04_01_100010_create_tags_table',1),(17,'2026_04_01_100011_create_activity_logs_table',1),(18,'2026_04_01_200001_add_username_to_users_table',1),(19,'2026_04_02_100001_create_cities_table',2);
+INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2026_04_01_063837_create_permission_tables',1),(5,'2026_04_01_064336_create_personal_access_tokens_table',1),(6,'2026_04_01_093442_create_notifications_table',1),(7,'2026_04_01_100001_add_fields_to_users_table',1),(8,'2026_04_01_100002_create_leads_table',1),(9,'2026_04_01_100003_create_clients_table',1),(10,'2026_04_01_100004_create_properties_table',1),(11,'2026_04_01_100005_create_lead_property_table',1),(12,'2026_04_01_100006_create_notes_table',1),(13,'2026_04_01_100007_create_follow_ups_table',1),(14,'2026_04_01_100008_create_communications_table',1),(15,'2026_04_01_100009_create_documents_table',1),(16,'2026_04_01_100010_create_tags_table',1),(17,'2026_04_01_100011_create_activity_logs_table',1),(18,'2026_04_01_200001_add_username_to_users_table',1),(19,'2026_04_02_100001_create_cities_table',2),(20,'2026_04_04_100001_add_pricing_fields_to_properties_table',3);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -478,6 +493,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `model_has_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `model_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -503,6 +519,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `model_has_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `model_has_roles` (
   `role_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -529,6 +546,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `notable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -561,6 +579,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notifications` (
   `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -590,6 +609,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `password_reset_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_reset_tokens` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -613,6 +633,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -640,6 +661,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `personal_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -673,6 +695,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `properties` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -680,8 +703,16 @@ CREATE TABLE `properties` (
   `type` enum('plot','villa','flat') COLLATE utf8mb4_unicode_ci NOT NULL,
   `sub_type` enum('orchard','settlement','sanad','na') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city_id` bigint unsigned DEFAULT NULL,
   `area` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` decimal(14,2) NOT NULL,
+  `owner_expected_price` decimal(14,2) DEFAULT NULL,
+  `quoted_price` decimal(14,2) DEFAULT NULL,
+  `commission_percent` decimal(5,2) NOT NULL DEFAULT '2.00',
+  `commission_amount` decimal(14,2) DEFAULT NULL,
+  `is_negotiable` tinyint(1) NOT NULL DEFAULT '0',
+  `negotiable_price` decimal(14,2) DEFAULT NULL,
+  `total_plot_price` decimal(14,2) DEFAULT NULL,
   `price_per_sqm` decimal(10,2) DEFAULT NULL,
   `size_sqm` decimal(10,2) DEFAULT NULL,
   `size_label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -703,7 +734,9 @@ CREATE TABLE `properties` (
   UNIQUE KEY `properties_slug_unique` (`slug`),
   KEY `properties_added_by_foreign` (`added_by`),
   KEY `properties_type_index` (`type`),
-  CONSTRAINT `properties_added_by_foreign` FOREIGN KEY (`added_by`) REFERENCES `users` (`id`) ON DELETE SET NULL
+  KEY `properties_city_id_foreign` (`city_id`),
+  CONSTRAINT `properties_added_by_foreign` FOREIGN KEY (`added_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `properties_city_id_foreign` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -713,7 +746,7 @@ CREATE TABLE `properties` (
 
 LOCK TABLES `properties` WRITE;
 /*!40000 ALTER TABLE `properties` DISABLE KEYS */;
-INSERT INTO `properties` VALUES (1,'Premium Orchard Plot - Assagao','premium-orchard-plot-assagao-jaa7y','plot','orchard','Assagao','North Goa',4500000.00,NULL,500.00,'500 sq.m',NULL,NULL,'Lush green orchard plot in prime Assagao location with road access.','available','[\"investment\", \"premium\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(2,'Settlement Plot - Calangute','settlement-plot-calangute-hnzhv','plot','settlement','Calangute','North Goa',8000000.00,NULL,300.00,'300 sq.m',NULL,NULL,'Settlement plot 5 mins from Calangute beach, ideal for villa construction.','available','[\"beach-proximity\", \"settlement\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(3,'Sanad Plot - Siolim','sanad-plot-siolim-y81or','plot','sanad','Siolim','North Goa',3500000.00,NULL,400.00,'400 sq.m',NULL,NULL,'Sanad plot with river view in quiet Siolim neighborhood.','available','[\"budget\", \"sanad\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(4,'Luxury Villa - Vagator','luxury-villa-vagator-pskmv','villa',NULL,'Vagator','North Goa',25000000.00,NULL,250.00,'250 sq.m built-up',4,4,'4BHK luxury villa with private pool and sea view.','available','[\"luxury\", \"pool\", \"sea-view\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(5,'2BHK Flat - Panjim','2bhk-flat-panjim-0gtoc','flat',NULL,'Panjim','Central Goa',6500000.00,NULL,95.00,'95 sq.m',2,2,'Ready-to-move 2BHK flat in the heart of Panjim.','available','[\"city\", \"ready-to-move\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(6,'NA Plot - Anjuna','na-plot-anjuna-8juta','plot','na','Anjuna','North Goa',12000000.00,NULL,600.00,'600 sq.m',NULL,NULL,'NA converted plot in premium Anjuna location.','reserved','[\"premium\", \"na-converted\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL);
+INSERT INTO `properties` VALUES (1,'Premium Orchard Plot - Assagao','premium-orchard-plot-assagao-jaa7y','plot','orchard','Assagao',NULL,'North Goa',4500000.00,NULL,NULL,2.00,NULL,0,NULL,NULL,NULL,500.00,'500 sq.m',NULL,NULL,'Lush green orchard plot in prime Assagao location with road access.','available','[\"investment\", \"premium\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(2,'Settlement Plot - Calangute','settlement-plot-calangute-hnzhv','plot','settlement','Calangute',NULL,'North Goa',8000000.00,NULL,NULL,2.00,NULL,0,NULL,NULL,NULL,300.00,'300 sq.m',NULL,NULL,'Settlement plot 5 mins from Calangute beach, ideal for villa construction.','available','[\"beach-proximity\", \"settlement\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(3,'Sanad Plot - Siolim','sanad-plot-siolim-y81or','plot','sanad','Siolim',NULL,'North Goa',3500000.00,NULL,NULL,2.00,NULL,0,NULL,NULL,NULL,400.00,'400 sq.m',NULL,NULL,'Sanad plot with river view in quiet Siolim neighborhood.','available','[\"budget\", \"sanad\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(4,'Luxury Villa - Vagator','luxury-villa-vagator-pskmv','villa',NULL,'Vagator',NULL,'North Goa',25000000.00,NULL,NULL,2.00,NULL,0,NULL,NULL,NULL,250.00,'250 sq.m built-up',4,4,'4BHK luxury villa with private pool and sea view.','available','[\"luxury\", \"pool\", \"sea-view\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(5,'2BHK Flat - Panjim','2bhk-flat-panjim-0gtoc','flat',NULL,'Panjim',NULL,'Central Goa',6500000.00,NULL,NULL,2.00,NULL,0,NULL,NULL,NULL,95.00,'95 sq.m',2,2,'Ready-to-move 2BHK flat in the heart of Panjim.','available','[\"city\", \"ready-to-move\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL),(6,'NA Plot - Anjuna','na-plot-anjuna-8juta','plot','na','Anjuna',NULL,'North Goa',12000000.00,NULL,NULL,2.00,NULL,0,NULL,NULL,NULL,600.00,'600 sq.m',NULL,NULL,'NA converted plot in premium Anjuna location.','reserved','[\"premium\", \"na-converted\"]',NULL,NULL,NULL,NULL,NULL,1,'2026-04-01 08:49:02','2026-04-01 08:49:02',NULL);
 /*!40000 ALTER TABLE `properties` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -723,6 +756,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `role_has_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `role_id` bigint unsigned NOT NULL,
@@ -749,6 +783,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -776,6 +811,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessions` (
   `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -795,7 +831,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('4bAi3IOALHME6Y5y6WAo855x7d9j8CijKkTIH6Fa',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJPZm1HY0JZRHh1OFppWXFhbnZUS2YzUlk4U0dqQ1dXclJUTVNuMnI4IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775053153),('4jPsQzJ4WOEBPLA0QhErs2toxWUELC8l3u9xEH5b',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiIxQWpGYldBSnpMMThFUzNFWG9QTGV0SjBucE5vUlNtS3FtN09xMFBrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9kYXNoYm9hcmQiLCJyb3V0ZSI6ImRhc2hib2FyZCJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjo2fQ==',1775116357),('fQxgTDrLDnrZsUBKC0YpAq6vRcfnkKGJ9i6zgEYw',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJVUXpMb2tLSkV6dGVyYXBBRERheWVHUU1FMjBJWHlVUm5rWnBoQ2dKIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL2xlYWRzIn0sIl9wcmV2aW91cyI6eyJ1cmwiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMlwvbG9naW4iLCJyb3V0ZSI6ImxvZ2luIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116064),('r2Dws0y95S47gCEVmAynBbKipRa230CHoIns1QjQ',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJsNGIxOXNhQUYwRjVFYUhUcTZNTUJ5VzAxa3hwRDRHVXpqTGJzelBrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9lbnF1aXJ5Iiwicm91dGUiOiJwdWJsaWMubGVhZC1mb3JtIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116239),('YjGTiLYRD6aiEenAIa6w5H9P1xQkInA34L3szyYe',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJ6Ym1nS2tlQ0d5cVFFWEJLVkhaN1lkNDJ2Qlh2MXJHd2RueldtcUZwIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sZWFkcyIsInJvdXRlIjoibGVhZHMuaW5kZXgifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6Nn0=',1775116074),('zTAAjnAhOY91cdI379K9AopQX9WCJbFSQyky9Lfg',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJWdUVxcVJKMjVzbERDaXV3anZqT1IwbFRKT1plQUttNFI2aWNkUlpOIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775116217);
+INSERT INTO `sessions` VALUES ('4bAi3IOALHME6Y5y6WAo855x7d9j8CijKkTIH6Fa',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJPZm1HY0JZRHh1OFppWXFhbnZUS2YzUlk4U0dqQ1dXclJUTVNuMnI4IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775053153),('4jPsQzJ4WOEBPLA0QhErs2toxWUELC8l3u9xEH5b',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiIxQWpGYldBSnpMMThFUzNFWG9QTGV0SjBucE5vUlNtS3FtN09xMFBrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sZWFkc1wvY3JlYXRlIiwicm91dGUiOiJsZWFkcy5jcmVhdGUifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6Nn0=',1775117419),('fQxgTDrLDnrZsUBKC0YpAq6vRcfnkKGJ9i6zgEYw',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJVUXpMb2tLSkV6dGVyYXBBRERheWVHUU1FMjBJWHlVUm5rWnBoQ2dKIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL2xlYWRzIn0sIl9wcmV2aW91cyI6eyJ1cmwiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMlwvbG9naW4iLCJyb3V0ZSI6ImxvZ2luIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116064),('JoXuAdq2jWvThXpOAMBR6yWcXJqyaBZE3INWGUo5',7,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJuMHEwN1lDVjF4SkxTVXVrRWtQbFBGS1pnWjVJQmd2Y0dpbU01cDVhIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9wcm9wZXJ0aWVzIiwicm91dGUiOiJwcm9wZXJ0aWVzLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfSwibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiOjd9',1775288163),('mkvKdflRFj0ssVErXt18WFVW17rwkgTM1F7WTzQB',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJyNngyUzNHYXdjM1RvR2R0QzFDcW9vaU9uZERCRlNTS09WcnRTZWxJIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL3Byb3BlcnRpZXNcLzEifSwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9wcm9wZXJ0aWVzXC8xIiwicm91dGUiOiJwcm9wZXJ0aWVzLnNob3cifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775288134),('r2Dws0y95S47gCEVmAynBbKipRa230CHoIns1QjQ',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJsNGIxOXNhQUYwRjVFYUhUcTZNTUJ5VzAxa3hwRDRHVXpqTGJzelBrIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9lbnF1aXJ5Iiwicm91dGUiOiJwdWJsaWMubGVhZC1mb3JtIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775116239),('snaiEGGhZkOGLuSgc1m9NETz10DTzDiweO96wyTJ',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJrUzNiWGE1NjVGQzd2SFlPd1l4QXU5V29hMldhbk1Xa2Vqb1ZiWTFxIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL3Byb3BlcnRpZXMifSwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9wcm9wZXJ0aWVzIiwicm91dGUiOiJwcm9wZXJ0aWVzLmluZGV4In0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=',1775288134),('YjGTiLYRD6aiEenAIa6w5H9P1xQkInA34L3szyYe',6,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJ6Ym1nS2tlQ0d5cVFFWEJLVkhaN1lkNDJ2Qlh2MXJHd2RueldtcUZwIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sZWFkcyIsInJvdXRlIjoibGVhZHMuaW5kZXgifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6Nn0=',1775116074),('YNSKAL43ya8ZCtj4lKUL0kuz5RFBF9VcKBIp6Ffd',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJ0T2hLSGtFV2pVVGtpRFRTM2VWRDhNTkRJTXZQRDJWT0N0cXZYWjhVIiwidXJsIjp7ImludGVuZGVkIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL3Byb3BlcnRpZXNcL2NyZWF0ZSJ9LCJfcHJldmlvdXMiOnsidXJsIjoiaHR0cDpcL1wvMTI3LjAuMC4xOjgwMDJcL3Byb3BlcnRpZXNcL2NyZWF0ZSIsInJvdXRlIjoicHJvcGVydGllcy5jcmVhdGUifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775288134),('zTAAjnAhOY91cdI379K9AopQX9WCJbFSQyky9Lfg',NULL,'127.0.0.1','curl/8.7.1','eyJfdG9rZW4iOiJWdUVxcVJKMjVzbERDaXV3anZqT1IwbFRKT1plQUttNFI2aWNkUlpOIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAyXC9sb2dpbiIsInJvdXRlIjoibG9naW4ifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119fQ==',1775116217);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -805,6 +841,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `taggables`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `taggables` (
   `tag_id` bigint unsigned NOT NULL,
   `taggable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -830,6 +867,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tags` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -856,6 +894,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -892,4 +931,4 @@ UNLOCK TABLES;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-02 13:31:00
+-- Dump completed on 2026-04-04 13:06:44
