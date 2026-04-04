@@ -71,29 +71,27 @@ class Property extends Model
 
     protected static function calculatePricing(Property $property): void
     {
-        // Auto-calc total plot price from size × price_per_sqm (plots only)
-        if ($property->size_sqm && $property->price_per_sqm) {
-            $property->total_plot_price = $property->size_sqm * $property->price_per_sqm;
+        // Auto-calc total plot price from size × max_rate (or price_per_sqm)
+        $rate = $property->max_rate_sqm ?: $property->price_per_sqm;
+        if ($property->size_sqm && $rate) {
+            $property->total_plot_price = $property->size_sqm * $rate;
         }
 
-        // If both quoted_price and owner_expected_price are set, margin mode — calc commission from difference
-        if ($property->quoted_price && $property->owner_expected_price) {
-            $property->commission_amount = $property->quoted_price - $property->owner_expected_price;
-            if ($property->quoted_price > 0) {
-                $property->commission_percent = round(($property->commission_amount / $property->quoted_price) * 100, 2);
-            }
-        }
-        // If only owner price + commission %, calc the rest
-        elseif ($property->owner_expected_price && $property->commission_percent && !$property->quoted_price) {
-            $property->commission_amount = $property->owner_expected_price * ($property->commission_percent / 100);
-            $property->quoted_price = $property->owner_expected_price + $property->commission_amount;
+        // Commission: 2% on quoted/display price
+        $basePrice = $property->quoted_price ?: $property->total_plot_price ?: $property->owner_expected_price ?: 0;
+        if ($basePrice > 0 && $property->commission_percent > 0) {
+            $property->commission_amount = round($basePrice * ($property->commission_percent / 100), 2);
         }
 
-        // Set display price
-        if ($property->quoted_price) {
+        // Set display price — always ensure it has a value
+        if ($property->quoted_price > 0) {
             $property->price = $property->quoted_price;
-        } elseif ($property->owner_expected_price) {
+        } elseif ($property->total_plot_price > 0) {
+            $property->price = $property->total_plot_price;
+        } elseif ($property->owner_expected_price > 0) {
             $property->price = $property->owner_expected_price;
+        } else {
+            $property->price = $property->price ?: 0;
         }
     }
 
