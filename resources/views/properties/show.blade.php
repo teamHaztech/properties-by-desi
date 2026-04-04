@@ -58,36 +58,57 @@
 
             {{-- Pricing Breakdown (Super Admin / Admin only) --}}
             @role(['admin', 'super_admin'])
-            @if($property->owner_expected_price || $property->quoted_price)
+            @if($property->quoted_price || $property->min_rate_sqm || $property->owner_expected_price)
             <div class="rounded-lg bg-white p-6 shadow border-l-4 border-green-500">
                 <h3 class="mb-4 text-lg font-semibold text-gray-900">Pricing Breakdown</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                    @if($property->owner_expected_price)
-                    <div class="text-center p-3 bg-gray-50 rounded-lg">
-                        <p class="text-xs text-gray-500">Owner Expects</p>
-                        <p class="text-lg font-bold text-gray-800">{{ $property->formatted_owner_price }}</p>
-                    </div>
+
+                    {{-- Plot: Min/Max rate --}}
+                    @if($property->type->value === 'plot')
+                        @if($property->min_rate_sqm)
+                        <div class="text-center p-3 bg-purple-50 rounded-lg">
+                            <p class="text-xs text-gray-500">Min Rate/sq.m</p>
+                            <p class="text-lg font-bold text-purple-700">₹{{ number_format($property->min_rate_sqm) }}</p>
+                            @if($property->size_sqm)
+                            <p class="text-xs text-purple-500">Total: {{ \App\Models\Property::formatIndian($property->size_sqm * $property->min_rate_sqm) }}</p>
+                            @endif
+                        </div>
+                        @endif
+                        @if($property->max_rate_sqm)
+                        <div class="text-center p-3 bg-indigo-50 rounded-lg">
+                            <p class="text-xs text-gray-500">Max Rate/sq.m</p>
+                            <p class="text-lg font-bold text-indigo-700">₹{{ number_format($property->max_rate_sqm) }}</p>
+                            @if($property->size_sqm)
+                            <p class="text-xs text-indigo-500">Total: {{ \App\Models\Property::formatIndian($property->size_sqm * $property->max_rate_sqm) }}</p>
+                            @endif
+                        </div>
+                        @endif
+                    @else
+                        {{-- Villa/Flat: Quoted + Final --}}
+                        @if($property->quoted_price)
+                        <div class="text-center p-3 bg-indigo-50 rounded-lg">
+                            <p class="text-xs text-gray-500">Quoted Price</p>
+                            <p class="text-lg font-bold text-indigo-700">{{ $property->formatted_quoted_price }}</p>
+                        </div>
+                        @endif
+                        @if($property->final_selling_price)
+                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                            <p class="text-xs text-gray-500">Final Selling</p>
+                            <p class="text-lg font-bold text-green-700">{{ \App\Models\Property::formatIndian($property->final_selling_price) }}</p>
+                        </div>
+                        @endif
                     @endif
+
+                    {{-- Commission --}}
                     @if($property->commission_amount)
-                    <div class="text-center p-3 bg-green-50 rounded-lg">
-                        <p class="text-xs text-gray-500">Our Commission</p>
-                        <p class="text-lg font-bold text-green-700">{{ \App\Models\Property::formatIndian($property->commission_amount) }}</p>
-                        <p class="text-xs text-green-600">({{ $property->commission_percent }}%)</p>
+                    <div class="text-center p-3 bg-emerald-50 rounded-lg">
+                        <p class="text-xs text-gray-500">Commission</p>
+                        <p class="text-lg font-bold text-emerald-700">{{ \App\Models\Property::formatIndian($property->commission_amount) }}</p>
+                        <p class="text-xs text-emerald-600">({{ $property->commission_percent }}%)</p>
                     </div>
                     @endif
-                    @if($property->quoted_price)
-                    <div class="text-center p-3 bg-indigo-50 rounded-lg">
-                        <p class="text-xs text-gray-500">We Quote</p>
-                        <p class="text-lg font-bold text-indigo-700">{{ $property->formatted_quoted_price }}</p>
-                    </div>
-                    @endif
-                    @if($property->total_plot_price)
-                    <div class="text-center p-3 bg-purple-50 rounded-lg">
-                        <p class="text-xs text-gray-500">Plot Total (Size × Rate)</p>
-                        <p class="text-lg font-bold text-purple-700">{{ \App\Models\Property::formatIndian($property->total_plot_price) }}</p>
-                        <p class="text-xs text-purple-600">{{ $property->size_sqm }} sq.m × ₹{{ number_format($property->price_per_sqm) }}</p>
-                    </div>
-                    @endif
+
+                    {{-- Negotiable --}}
                     <div class="text-center p-3 {{ $property->is_negotiable ? 'bg-yellow-50' : 'bg-red-50' }} rounded-lg">
                         <p class="text-xs text-gray-500">Negotiable?</p>
                         <p class="text-lg font-bold {{ $property->is_negotiable ? 'text-yellow-700' : 'text-red-700' }}">
